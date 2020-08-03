@@ -1,8 +1,67 @@
-﻿@{
+﻿@using System.Collections.Generic
+@model List<AkronWeb.Models.User>
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+<div class="col-md">
+<table class="table table-hover table-responsive table-striped">
+    <thead>
+        <tr>
+            <th colspan="6">
+               <label>Выбрать всё</label> <input type="checkbox" id="selectAll" />
+            </th>
+        </tr>
+        <tr>
+            <th>Пользователь</th>
+            <th>Скачать</th>
+            <th>Удалить</th>
+            <th>Изменить</th>
+            <th>Создать</th>
+            <th>Чтение</th>
+        </tr>
+    </thead>
+    <tbody id="userTableBody">
+        @foreach (var user in Model)
+        {
+            <tr class="text-center">
+                <input type="hidden" value="@user.Id"/>
+                <td>@user.Name</td>
+                <td> 
+                    <input name="CanDownload" type="checkbox" value="@user.CanDownload" 
+                        @(user.CanDownload == true ? "checked" : "")
+                     /> 
+                </td>
+                <td><input name="CanDelete" type="checkbox" value="@user.CanDelete" 
+                        @(user.CanDelete == true ? "checked" : "")
+                     /> </td>
+                <td><input name="CanModify" type="checkbox" value="@user.CanModify" 
+                        @(user.CanModify == true ? "checked" : "")
+                     /> </td>
+                <td><input name="CanCreate" type="checkbox" value="@user.CanCreate" 
+                        @(user.CanCreate == true ? "checked" : "")
+                     /></td>
+                <td><input name="CanRead" type="checkbox" value="@user.CanRead"
+                        @(user.CanRead == true ? "checked" : "")
+                     /></td>
+            </tr>
+        }
+    </tbody>
+</table>
 </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(()=>{
+        $('#selectAll[type=checkbox]').change(()=>{
+            let checkedValue = $('#selectAll').is(':checked');
+            if(checkedValue === true){
+                 $('#userTableBody :input[type=checkbox]').attr('checked', 'checked');
+            }else{
+                 $('#userTableBody :input[type=checkbox]').removeAttr('checked');
+            }
+        });
+    });
+</script>
+
